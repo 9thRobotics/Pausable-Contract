@@ -5,8 +5,7 @@ contract PausableContract {
     bool public paused;
     address public admin;
 
-    event Paused(address indexed by);
-    event Unpaused(address indexed by);
+    event PausedStateChanged(address indexed by, bool isPaused);
 
     modifier onlyAdmin() {
         require(msg.sender == admin, "Not an admin");
@@ -24,12 +23,12 @@ contract PausableContract {
 
     function pause() external onlyAdmin {
         paused = true;
-        emit Paused(msg.sender);
+        emit PausedStateChanged(msg.sender, true);
     }
 
     function unpause() external onlyAdmin {
         paused = false;
-        emit Unpaused(msg.sender);
+        emit PausedStateChanged(msg.sender, false);
     }
 
     function performOperation() external whenNotPaused {
